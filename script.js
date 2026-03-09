@@ -55,3 +55,49 @@ function renderCards(issues) {
             }
             return "";
         }).join("");
+
+         // Create Card Element
+        const card = document.createElement("div");
+        card.className = `bg-white rounded-2xl shadow-md p-6 flex flex-col justify-between hover:shadow-xl transition cursor-pointer ${border}`;
+
+        card.innerHTML = `
+            <div>
+                <div class="flex justify-between items-center mb-4">
+                    <div class="w-10 h-10 bg-gray-100 rounded-full flex items-center justify-center">
+                        <img src="${issue.status === "open" ? "assets/Open-Status.png" : "assets/Closed-Status.png"}" alt="status" class="w-6 h-6"/>
+                    </div>
+                    <span class="px-4 py-1 rounded-full text-sm font-semibold ${priorityColor}">
+                        ${issue.priority.toUpperCase()}
+                    </span>
+                </div>
+
+                <h2 class="text-lg font-bold text-gray-800 mb-3">
+                    ${issue.title}
+                </h2>
+
+                <p class="text-gray-500 text-sm mb-4 line-clamp-3">
+                    ${issue.description}
+                </p>
+
+                <div class="flex gap-2 flex-wrap mb-6">
+                    ${labels}
+                </div>
+            </div>
+
+            <div class="border-t pt-4 text-sm text-gray-500 flex justify-between">
+                <span>#${issue.id} by ${issue.author}</span>
+                <span>${new Date(issue.createdAt).toLocaleDateString()}</span>
+            </div>
+        `;
+
+        card.onclick = function () {
+            openModal(issue.id);
+        };
+
+        container.appendChild(card);
+    });
+
+    document.getElementById("issueCount").innerText = `${issues.length} Issues`;
+}
+
+
