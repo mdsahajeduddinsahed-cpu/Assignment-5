@@ -100,6 +100,28 @@ function renderCards(issues) {
     document.getElementById("issueCount").innerText = `${issues.length} Issues`;
 }
 
+//FilterIssues Function
+function filterIssues(type, btn) {
+
+    const buttons = document.querySelectorAll(".tab-btn");
+
+    buttons.forEach(b => {
+        b.classList.remove("bg-[#5D00FF]", "text-white", "shadow-md");
+        b.classList.add("border", "border-gray-300", "text-gray-500");
+    });
+
+    btn.classList.add("bg-[#5D00FF]", "text-white", "shadow-md");
+    btn.classList.remove("border", "border-gray-300", "text-gray-500");
+
+    if (type === "all") {
+        renderCards(allData);
+        return;
+    }
+
+    const filtered = allData.filter(issue => issue.status === type);
+    renderCards(filtered);
+}
+
 
 // --- Search Function ---
 async function handleSearch() {
