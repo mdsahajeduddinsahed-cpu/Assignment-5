@@ -140,3 +140,48 @@ async function handleSearch() {
         console.error("Error searching issues:", error);
     }
 }
+
+
+// --- Modal Function ---
+async function openModal(id) {
+    try {
+        const res = await fetch(`https://phi-lab-server.vercel.app/api/v1/lab/issue/${id}`);
+        const json = await res.json();
+        const issue = json.data;
+
+        const modalContent = document.getElementById("modalContent");
+
+        modalContent.innerHTML = `
+            <h2 class="text-2xl font-bold mb-2">
+                ${issue.title}
+            </h2>
+
+            <div class="text-sm text-gray-500 mb-4">
+                Opened by ${issue.author} • ${new Date(issue.createdAt).toLocaleDateString()}
+            </div>
+
+            <p class="text-gray-600 mb-6">
+                ${issue.description}
+            </p>
+
+            <div class="bg-gray-100 p-4 rounded-lg flex justify-between">
+                <div>
+                    <p class="text-sm text-gray-500">Assignee</p>
+                    <p class="font-semibold">${issue.assignee || "Unassigned"}</p>
+                </div>
+
+                <div>
+                    <p class="text-sm text-gray-500">Priority</p>
+                    <span class="bg-red-500 text-white text-xs px-3 py-1 rounded-full">
+                        ${issue.priority}
+                    </span>
+                </div>
+            </div>
+        `;
+
+        const modal = document.getElementById("issueModal");
+        modal.showModal();
+    } catch (error) {
+        console.error("Error opening modal:", error);
+    }
+}
