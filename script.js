@@ -101,3 +101,20 @@ function renderCards(issues) {
 }
 
 
+// --- Search Function ---
+async function handleSearch() {
+    const text = document.getElementById("searchInput").value;
+
+    if (!text) {
+        renderCards(allData);
+        return;
+    }
+
+    try {
+        const res = await fetch(`https://phi-lab-server.vercel.app/api/v1/lab/issues/search?q=${text}`);
+        const json = await res.json();
+        renderCards(json.data);
+    } catch (error) {
+        console.error("Error searching issues:", error);
+    }
+}
